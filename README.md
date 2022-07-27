@@ -1,2 +1,3 @@
 # audio-looper
-HTML audio looper with multiple file support
+HTML audio looper for background music or other uses.
+Feel free to use how you want!
