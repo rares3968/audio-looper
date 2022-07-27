@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<HTML>
+<title>Audio Looper</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<input type="file" id="upload" multiple hidden />
+<style>
+  .c1{
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+  body {
+  background-color: rgb(72, 71, 71);
+  }
+  label {
+  background-color: rgb(0,255,0);
+  color: white;
+  padding: 0.5rem;
+  font-family: "Lucida Console", "Courier New", monospace;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  }
+  .container{ position: relative; z-index: 4000; }
+</style>
+<script>
+function handleFiles(event) {
+    var files = event.target.files;
+    file = 0;
+    $("#src").attr("src", URL.createObjectURL(files[file]));
+    document.getElementById("audio").load();
+    document.getElementById("info").innerText = "FILENAME: " + files[file].name;
+    window.document.title = "Audio Looper - Now playing " + files[file].name;
+
+    document.getElementById("audio").addEventListener("ended", function(){
+    document.getElementById("audio").currentTime = 0;
+    file++;
+    if (file == files.length) {
+        file = 0;
+        $("#src").attr("src", URL.createObjectURL(files[file]));
+        document.getElementById("audio").load();
+        document.getElementById("info").innerText = "FILENAME: " + files[file].name;
+        window.document.title = "Audio Looper - Now playing " + files[file].name;
+    }
+    else{
+    $("#src").attr("src", URL.createObjectURL(files[file]));
+    }
+    document.getElementById("audio").load();
+    document.getElementById("info").innerText = "FILENAME: " + files[file].name;
+    window.document.title = "Audio Looper - Now playing " + files[file].name;
+});
+}
+
+document.getElementById("upload").addEventListener("change", handleFiles, false);
+</script>
+<script>
+function main() {
+var cr = document.getElementById("audio").currentTime;
+var dr = document.getElementById("audio").duration;
+var cdur = new Date(cr * 1000).toISOString().substr(11, 8);
+var tdur = new Date(dr * 1000).toISOString().substr(11, 8);
+document.getElementById("duration").innerText = "TIME: " + cdur + " / "+ tdur;
+}
+setInterval(main,500)
+</script>
+<h1 class="c1">Audio Looper</h1>
+<label for="upload">Open Files</label>
+<p></p>
+<audio id="audio" controls autoplay>
+  <source src="" id="src" />
+</audio>
+<p></p>
+<span class="c1" id="info">FILENAME: ---</span>
+<p></p> 
+<span class="c1" id="duration">TIME: 00:00:00 / 00:00:00</span>
+</HTML>
